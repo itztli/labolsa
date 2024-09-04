@@ -20,8 +20,8 @@ int main(int argn, char **argv){
 
     market = newMarket(argv[1],M,N);
     
-    user = malloc(sizeof(User)*N);
-    stock = malloc(sizeof(Stock)*M);
+    //user = malloc(sizeof(User)*N);
+    //stock = malloc(sizeof(Stock)*M);
     
     printf("Labolsa simulator ver 20240828_1056\n");
 
@@ -29,17 +29,14 @@ int main(int argn, char **argv){
     printf("Generating %i stock... ",M);
     for(i=0; i < M; i++){
       sprintf(code,"MEX%i",i);
-      addStock(market,newStock(code,100.0));
-      
+      addStock(market,newStock(code,100.0));      
       //stock[i] = newStock(code,100.0);
     }
     printf("Ready!\n");
-  
-
-    
+     
     printf("Generating %i users... ",N);
     for(i=0; i < N; i++){
-      user[i] = newUser(i,1000.00);
+      addUser(market,newUser(i,1000.00));
     }
     printf("Ready!\n");
      //printf("%s:%f\n",stock[0].code,stock[0].price);
@@ -48,8 +45,8 @@ int main(int argn, char **argv){
 
     printMarket(market);
 
-    free(user);
-    free(stock);
+    //free(user);
+    //free(stock);
     free(market);
   }else{
     print_help();
