@@ -39,3 +39,10 @@ void printMarket(Market *market){
     printf("%i %f\n",market->users[i].index, market->users[i].money);
   }
 }
+
+int closeMarket(Market *market){
+  free(market->stocks);
+  free(market->users);
+  free(market);
+  return 1;
+}

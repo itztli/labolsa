@@ -8,9 +8,10 @@ extern "C" {
   typedef struct{
     char code[8];
     float price;
+    int nstocks;
   }Stock;
 
-  Stock newStock(char code[], float price);
+  Stock newStock(char code[], float price, int nstocks);
 
 #ifdef __cplusplus
 } /* extern "C" */
