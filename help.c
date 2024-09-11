@@ -5,5 +5,5 @@
 void print_help(){
     printf("Error: Missing arguments.\n");
     printf("Three argument are required:\n");
-    printf("Example: ./labolsa <name> <stocks> <users>.\n");
+    printf("Example: ./labolsa <name> <stocks> <users> <orders>\n");
 }

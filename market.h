@@ -7,23 +7,12 @@ extern "C" {
 
 #include "stock.h"
 #include "user.h"
-  //#include "order.h"
+#include "common.h"
 
-  struct Order;
+  //struct Order;
   
-  typedef struct{
-    char name[8];
-    int nstocks; // Maximum stocks
-    int nusers;  // Maximum users
-    int index_stock; //total stocks
-    int index_user; // total user
-    int index_order; //total of orders by iteration
-    Stock *stocks;
-    User *users;
-    struct Order *orders;
-  }Market;
-
-  Market *newMarket(char name[], int nstocks, int nusers);
+ 
+  Market *newMarket(char name[], int nstocks, int nusers, int norders);
 
   int addStock(Market *market, Stock stock);
   

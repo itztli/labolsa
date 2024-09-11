@@ -7,23 +7,16 @@ extern "C" {
 
 #include "stock.h"
 #include "user.h"
-  //#include "market.h"
+#include "common.h"
 
-  struct Market;
+  //struct Market;
   
-  typedef struct{    
-    Stock *stock;
-    User *user;
-    int n_actions; //number of actions in the transaction.
-    int typeOrder; //0:sell 1:buy
-    float ask;
-    float bid;
-  }Order;
-
-  int createrOrder_buy(Market *market, Stock *stock, User *user, int n_actions,float bid);
+  Order createrOrder_buy(Market *market, Stock *stock, User *user);
   
-  int createrOrder_sell(Market *market, Stock *stock, User *user, int n_actions,float ask);
+  Order createrOrder_sell(Market *market,Stock *stock, User *user);
 
+  void printOrders(Market *market);
+  
   
 #ifdef __cplusplus
 } /* extern "C" */
