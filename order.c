@@ -18,7 +18,7 @@ double randomValue(double a, double b) {
 Order createrOrder_buy(Market *market,Stock *stock, User *user){
   Order order;
   float risk;
-  if (market->index_order < market->norders){
+  if (market->index_order_buy < market->norders){
   
   //necesitamos una funcion que de valores entre 0.02 y - 0.05)
   risk = (float)randomValue(-0.05, 0.02);
@@ -32,8 +32,8 @@ Order createrOrder_buy(Market *market,Stock *stock, User *user){
   }
   user->money -= order.n_actions*order.bid;
   user->money_in_orders += order.n_actions*order.bid;
-  market->orders[market->index_order] = order;
-  market->index_order++;
+  market->orders_buy[market->index_order_buy] = order;
+  market->index_order_buy++;
   }else{
     printf("Warning: Not enough memory to create order.\n");
     order.typeOrder = -1;
@@ -43,12 +43,39 @@ Order createrOrder_buy(Market *market,Stock *stock, User *user){
   
 Order createrOrder_sell(Market *market,Stock *stock, User *user){
   Order order;
-  return order;
+  float risk;
+  if (market->index_order_sell < market->norders){
+    
+    //necesitamos una funcion que de valores entre 0.02 y - 0.05)
+    risk = (float)randomValue(-0.02, 0.05);
+    order.stock = stock;
+    order.user = user;
+    order.typeOrder = 0;
+    order.ask = stock->price*(1.0+risk);
+    order.n_actions = (int)(get(*user,stock->code)*randomValue(0.0, 1.0));
+    if (order.n_actions < 1){
+      order.n_actions = 1;
+    }
+
+    market->orders_sell[market->index_order_sell] = order;
+    market->index_order_sell++;
+  }else{
+    printf("Warning: Not enough memory to create order.\n");
+    order.typeOrder = -1;
+  }
+  return order;    
 }
 
 void printOrders(Market *market){
-  for (int i=0; i < market->index_order; i++){
-    printf("%i,%i\n",i,market->orders[i].n_actions);
+  
+  printf("Orders Buy\n");
+  for (int i=0; i < market->index_order_buy; i++){
+    printf("%i,%i,%f\n",i,market->orders_buy[i].n_actions,market->orders_buy[i].bid);
   }
+  printf("Orders Sell\n");
+  for (int i=0; i < market->index_order_sell; i++){
+    printf("%i,%i,%f\n",i,market->orders_sell[i].n_actions,market->orders_sell[i].ask);
+  }
+  
 }
   

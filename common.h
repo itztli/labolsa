@@ -22,10 +22,12 @@ extern "C" {
     int norders; // Maximum number of orders
     int index_stock; //total stocks
     int index_user; // total user
-    int index_order; //total of orders by iteration
+    int index_order_buy; //total of orders by iteration
+    int index_order_sell; //total of orders by iteration
     Stock *stocks;
     User *users;
-    Order *orders;
+    Order *orders_buy;
+    Order *orders_sell;
   }Market;
 
 
