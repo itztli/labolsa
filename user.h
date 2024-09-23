@@ -29,6 +29,9 @@ extern "C" {
   int askOrderSell(User user, Stock stock);
 
   int get(User user, char key[]);
+  
+  void insert(User *user, char key[], int value);
+
 #ifdef __cplusplus
 } /* extern "C" */
 #endif /* __cplusplus */

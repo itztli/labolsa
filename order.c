@@ -18,7 +18,7 @@ double randomValue(double a, double b) {
 Order createrOrder_buy(Market *market,Stock *stock, User *user){
   Order order;
   float risk;
-  if (market->index_order_buy < market->norders){
+  if (market->index_order_buy < market->norders_buy){
   
   //necesitamos una funcion que de valores entre 0.02 y - 0.05)
   risk = (float)randomValue(-0.05, 0.02);
@@ -44,7 +44,7 @@ Order createrOrder_buy(Market *market,Stock *stock, User *user){
 Order createrOrder_sell(Market *market,Stock *stock, User *user){
   Order order;
   float risk;
-  if (market->index_order_sell < market->norders){
+  if (market->index_order_sell < market->norders_sell){
     
     //necesitamos una funcion que de valores entre 0.02 y - 0.05)
     risk = (float)randomValue(-0.02, 0.05);

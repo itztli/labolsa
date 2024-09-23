@@ -13,7 +13,7 @@ int main(int argn, char **argv){
   Stock *stock;
   Market *market;
   char code[8];
-  int i,N,M,P;
+  int i,j,k,n,N,M,P;
   float memory_used;
   
   //printf("%i\n",argn);
@@ -45,7 +45,21 @@ int main(int argn, char **argv){
      //printf("%s:%f\n",stock[0].code,stock[0].price);
     memory_used = (float)(sizeof(User)*N+sizeof(Stock)*M)/1e6; 
     printf("Memory used: %f Mb \n",memory_used);
+
+    // create the OPIs of our model. We create a random asignator of OPIS for all the users.
     srand(time(NULL));
+    k=0;
+    do{
+      for(int i=0; i < market->index_user;i++){
+	j = (int)randomValue(0.0, (float)market->index_stock);
+	  n = (int)((market->users[i].money/market->stocks[j].price)*randomValue(0.0, 1.0));
+	if (n < 1) n = 1;
+	buy_OPI(&market->stocks[j],&market->users[i],n,market->stocks[j].price);
+      }
+      k++;
+    }while(k < 2);
+    
+
     for(int i=0; i< 2; i++){
       montecarlo(market);
       printJapaneseCandle(market);

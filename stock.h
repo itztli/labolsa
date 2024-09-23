@@ -8,7 +8,7 @@ extern "C" {
   typedef struct{
     char code[8];
     float price;
-    int nstocks;
+    int nstocks; // stocks available for sell.
   }Stock;
 
   Stock newStock(char code[], float price, int nstocks);

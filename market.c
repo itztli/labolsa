@@ -11,7 +11,8 @@ Market *newMarket(char name[], int nstocks, int nusers, int norders){
   strcpy(market->name, name);
   market->nstocks = nstocks;
   market->nusers = nusers;
-  market->norders = norders;
+  market->norders_buy = norders;
+  market->norders_sell = norders;
   market->stocks = malloc(sizeof(Stock)*nstocks);
   market->users = malloc(sizeof(User)*nusers);
   market->orders_buy = malloc(sizeof(Order)*norders);
@@ -33,6 +34,17 @@ int addUser(Market *market, User user){
   market->users[market->index_user] = user;
   market->index_user++;
   return 1;
+}
+
+int buy_OPI(Stock *stock, User *user, int nstocks, float value){
+  if (user->money >= nstocks*value){
+    user->money -= nstocks*value;
+    stock->nstocks -= nstocks;
+    insert(user,stock->code,nstocks);
+    return 1;
+  }else{
+    return 0;
+  }
 }
 
 void printMarket(Market *market){

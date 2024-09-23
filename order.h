@@ -17,7 +17,8 @@ extern "C" {
 
   void printOrders(Market *market);
   
-  
+  double randomValue(double a, double b);  
+
 #ifdef __cplusplus
 } /* extern "C" */
 #endif /* __cplusplus */

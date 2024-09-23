@@ -18,6 +18,8 @@ extern "C" {
   
   int addUser(Market *market, User user);
 
+  int buy_OPI(Stock *stock, User *user, int nstocks, float value);
+  
   void printMarket(Market *market);
 
   int closeMarket(Market *market);

@@ -19,7 +19,8 @@ extern "C" {
     char name[8];
     int nstocks; // Maximum stocks
     int nusers;  // Maximum users
-    int norders; // Maximum number of orders
+    int norders_buy; // Maximum number of orders
+    int norders_sell;
     int index_stock; //total stocks
     int index_user; // total user
     int index_order_buy; //total of orders by iteration
