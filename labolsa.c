@@ -53,7 +53,9 @@ int main(int argn, char **argv){
       for(int i=0; i < market->index_user;i++){
 	j = (int)randomValue(0.0, (float)market->index_stock);
 	  n = (int)((market->users[i].money/market->stocks[j].price)*randomValue(0.0, 1.0));
-	if (n < 1) n = 1;
+	  //printf("INFO: n= %i\n",n);
+	  if (n < 1) n = 1;
+	  //printf("INFO1:%s\n",market->stocks[j].code);
 	buy_OPI(&market->stocks[j],&market->users[i],n,market->stocks[j].price);
       }
       k++;
