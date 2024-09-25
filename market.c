@@ -67,3 +67,11 @@ int closeMarket(Market *market){
   free(market);
   return 1;
 }
+
+int remain_stocks(Market market){
+  for (int i=0; i < market.index_stock; i++){
+    if(market.stocks[i].nstocks > 0)
+      return 1;
+  }
+  return 0;
+}

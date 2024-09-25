@@ -32,14 +32,14 @@ int main(int argn, char **argv){
     printf("Generating %i stock... ",M);
     for(i=0; i < M; i++){
       sprintf(code,"MEX%i",i);
-      addStock(market,newStock(code,100.0,1000));      
+      addStock(market,newStock(code,100.0,50));      
       //stock[i] = newStock(code,100.0);
     }
     printf("Ready!\n");
      
     printf("Generating %i users... ",N);
     for(i=0; i < N; i++){
-      addUser(market,newUser(i,1000.00));
+      addUser(market,newUser(i,10000.00));
     }
     printf("Ready!\n");
      //printf("%s:%f\n",stock[0].code,stock[0].price);
@@ -57,7 +57,13 @@ int main(int argn, char **argv){
 	buy_OPI(&market->stocks[j],&market->users[i],n,market->stocks[j].price);
       }
       k++;
-    }while(k < 2);
+
+      //printMarket(market);
+      
+    }while(remain_stocks(*market) > 0);
+
+    printf("INFO: IOPs iterations: %i\n",k);
+
     printMarket(market);
 
     for(int i=0; i< 2; i++){

@@ -23,6 +23,8 @@ extern "C" {
   void printMarket(Market *market);
 
   int closeMarket(Market *market);
+
+  int remain_stocks(Market market);
   
 #ifdef __cplusplus
 } /* extern "C" */
