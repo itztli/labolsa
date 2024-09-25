@@ -50,11 +50,12 @@ int buy_OPI(Stock *stock, User *user, int nstocks, float value){
 void printMarket(Market *market){
   printf("Stocks:\n");
   for(int i=0; i < market->index_stock; i++){
-    printf("%s\n",market->stocks[i].code);
+    printf("%s\t%f\t%i\n",market->stocks[i].code,market->stocks[i].price,market->stocks[i].nstocks);
   }
   printf("Users:\n");
   for(int i=0; i < market->index_user; i++){
-    printf("%i %f\n",market->users[i].index, market->users[i].money);
+    printf("%i\t%f\n",market->users[i].index, market->users[i].money);
+    printMap(market->users[i]);
   }
 }
 

@@ -32,6 +32,8 @@ extern "C" {
   
   void insert(User *user, char key[], int value);
 
+  void printMap(User user); 
+
 #ifdef __cplusplus
 } /* extern "C" */
 #endif /* __cplusplus */

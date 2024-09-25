@@ -45,7 +45,7 @@ int get(User user, char key[])
 void printMap(User user) 
 { 
     for (int i = 0; i < user.size; i++) { 
-        printf("%s: %d\n", user.keys[i], user.values[i]); 
+        printf("\t%s: %d\n", user.keys[i], user.values[i]); 
     } 
 } 
 //end from

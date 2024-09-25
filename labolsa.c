@@ -58,7 +58,7 @@ int main(int argn, char **argv){
       }
       k++;
     }while(k < 2);
-    
+    printMarket(market);
 
     for(int i=0; i< 2; i++){
       montecarlo(market);
