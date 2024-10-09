@@ -73,9 +73,9 @@ int askOrderBuy(User user, Stock stock){
   //ask
 int askOrderSell(User user, Stock stock){
   int r;
-  printf("INFO get user %i: %s\t%i\n",user.index, stock.code, get(user, stock.code));
+  //printf("INFO get user %i: %s\t%i\n",user.index, stock.code, get(user, stock.code));
   if (get(user, stock.code) > 0){
-    printf("INFO: User have stock %s!\n",stock.code);
+    //printf("INFO: User have stock %s!\n",stock.code);
     r = rand();
     if (r%2 == 0){
       //printf("INFO:Sell\n");

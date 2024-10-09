@@ -11,8 +11,8 @@ extern "C" {
     User *user;
     int n_actions; //number of actions in the transaction.
     int typeOrder; //0:sell 1:buy -1:not enough memory
-    float ask;
-    float bid;
+    float ask; //sell
+    float bid; //buy
   }Order;
 
    typedef struct{
