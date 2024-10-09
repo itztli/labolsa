@@ -47,10 +47,10 @@ int buy_OPI(Stock *stock, User *user, int nstocks, float value){
   if ((user->money >= nstocks*value) && (stock->nstocks > 0)){    
       user->money -= nstocks*value;
       stock->nstocks -= nstocks;
-      printf("INFO1:%s\n",stock->code);
+      //printf("INFO1:User:%i, Stock code:%s\n",user->index, stock->code);
       insert(user,stock->code,nstocks);
-      printMap(*user);
-      printf("---------\n");
+      //printMap(*user);
+      //printf("---------\n");
       return nstocks;
     }else{ return 0; }
     //}else{ return 0; }

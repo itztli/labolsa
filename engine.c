@@ -10,9 +10,11 @@ int montecarlo(Market *market){
   int r;
   int n_actions,actual_stock;
   float ask,bid;
-
+  int n_buy, n_sell;
+  n_buy=0;
+  n_sell=0;
   //CREATING BUY/SELL ORDERS
-  printf("Creating orders.\n");  
+  printf("Creating orders:\n");  
   //printf("INFO: index_stock=%i\n",market->index_stock);
   for(int i=0; i < market->index_stock; i++){
     price = market->stocks[i].price;
@@ -21,30 +23,34 @@ int montecarlo(Market *market){
       //the user have enough money to make a transaction.
       if (askOrderBuy(market->users[j], market->stocks[i])){
 	createrOrder_buy(market, &market->stocks[i], &market->users[j]);
+	n_buy++;
       }
       //printf("INFO: User=%i code=%s\n",j,market->stocks[i].code);
       if (askOrderSell(market->users[j], market->stocks[i])){
 	//printf("INFO: User %i wants to sell!\n",j);
 	createrOrder_sell(market, &market->stocks[i], &market->users[j]);
-	}
-      
+	n_sell++;
+      }
       //}
     } //j
   } //i
 
-
+  printf("Buy Orders:%i\tSell Orders:%i.\n",n_buy,n_sell);
   
   // EXECUTINGS ORDERS
-  printf("INFO200: Executing orders.\n");
+  printf("Executing orders.\n");
   for (int i=0; i < market->index_order_buy; i++){
     bid = market->orders_buy[i].bid;
+    printf("Looking for sell [%i/%s/%i/%f]...",market->orders_buy[i].user->index ,market->orders_buy[i].stock->code,market->orders_buy[i].n_actions  ,bid);
     for (int j=0; j < market->index_order_sell; j++){
       ask = market->orders_sell[j].ask;
+      printf("[%f],",ask);
       if (bid >= ask){
 	n_actions = market->orders_buy[i].n_actions;
 	if (market->orders_buy[i].n_actions > market->orders_sell[j].n_actions){
 	  n_actions = market->orders_sell[j].n_actions;
 	}
+	printf("<%s/%i>\n",market->orders_buy[i].stock->code, n_actions);
 	//update the n_actions in the order
 	market->orders_buy[i].n_actions -= n_actions;
 	//Update the money in order from the user i

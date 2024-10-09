@@ -64,11 +64,13 @@ int main(int argn, char **argv){
       
     }while(remain_stocks(*market) > 0);
 
-    printf("INFO: IOPs iterations: %i\n",k);
+    printf("INFO202: IOPs iterations: %i\n",k);
 
-    printMarket(market);
+    //printMarket(market);
 
+    printf("Running Montecarlo...\n");
     for(int i=0; i < 1; i++){
+      printf("%i:",i);
       montecarlo(market);
       printJapaneseCandle(market);
       //printOrders(market);
