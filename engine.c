@@ -36,21 +36,24 @@ int montecarlo(Market *market){
   } //i
 
   printf("Buy Orders:%i\tSell Orders:%i.\n",n_buy,n_sell);
+
+  // CLEAR BEGIN_FLAGS
   
   // EXECUTINGS ORDERS
   printf("Executing orders.\n");
   for (int i=0; i < market->index_order_buy; i++){
     bid = market->orders_buy[i].bid;
-    printf("Looking for sell [%i/%s/%i/%f]...",market->orders_buy[i].user->index ,market->orders_buy[i].stock->code,market->orders_buy[i].n_actions  ,bid);
+    
+    //printf("Looking for sell [%i/%s/%i/%f]...",market->orders_buy[i].user->index ,market->orders_buy[i].stock->code,market->orders_buy[i].n_actions  ,bid);
     for (int j=0; j < market->index_order_sell; j++){
       ask = market->orders_sell[j].ask;
-      printf("[%f],",ask);
+      //printf("[%f],",ask);
       if (bid >= ask){
 	n_actions = market->orders_buy[i].n_actions;
 	if (market->orders_buy[i].n_actions > market->orders_sell[j].n_actions){
 	  n_actions = market->orders_sell[j].n_actions;
 	}
-	printf("<%s/%i>\n",market->orders_buy[i].stock->code, n_actions);
+	//printf("<%i/%s/%i>\n",market->orders_buy[i].user->index,market->orders_buy[i].stock->code, n_actions);
 	//update the n_actions in the order
 	market->orders_buy[i].n_actions -= n_actions;
 	//Update the money in order from the user i
@@ -64,9 +67,27 @@ int montecarlo(Market *market){
 	actual_stock = get(*market->orders_buy[i].user, market->orders_buy[i].stock[i].code);
 	insert(market->orders_buy[i].user,market->orders_buy[i].stock[i].code,actual_stock+n_actions);
 	// update the price of the stock
+	if (market->orders_sell[j].stock->begin_flag == 1){
+	  market->orders_sell[j].stock->begin = bid;
+	  market->orders_sell[j].stock->begin_flag = 0;
+	}
 	market->orders_buy[i].stock->price = (market->orders_buy[i].stock->price + bid)/2.0;
 
-      }
+
+	if (bid < market->orders_buy[i].stock->min){
+	  market->orders_buy[i].stock->min = bid;
+	}
+
+	if (bid > market->orders_buy[i].stock->max){
+	  market->orders_buy[i].stock->max = bid;
+	}
+
+	market->orders_buy[i].stock->end = bid;
+	
+      } // if bid >= ask
+      
+      if (market->orders_buy[i].n_actions == 0){break;}
+
     }
   }
   
@@ -74,6 +95,12 @@ int montecarlo(Market *market){
 }
 
 int printJapaneseCandle(Market *market){
+  //printf("Stocks:\n");
+  printf("CODE\tMIN\t\tBEGIN\t\tAVERAGE\t\tEND\t\tMAX\n");
+  for(int i=0; i < market->index_stock; i++){
+    printf("%s\t%f\t%f\t%f\t%f\t%f\n",market->stocks[i].code,market->stocks[i].min,market->stocks[i].begin,market->stocks[i].price,market->stocks[i].end,market->stocks[i].max);
+  }
+
   return 1;
 }
 

@@ -27,6 +27,7 @@ Order createrOrder_buy(Market *market,Stock *stock, User *user){
   order.typeOrder = 1;
   order.bid = stock->price*(1.0+risk);
   order.n_actions = (int)((user->money/order.bid)*randomValue(0.0, 1.0));
+  order.stock->begin_flag = 1;
   if (order.n_actions < 1){
     order.n_actions = 1;
   }

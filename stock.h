@@ -9,6 +9,11 @@ extern "C" {
     char code[8];
     float price;
     int nstocks; // stocks available for sell.
+    float min;
+    float max;
+    float begin;
+    float end;
+    int begin_flag;
   }Stock;
 
   Stock newStock(char code[], float price, int nstocks);

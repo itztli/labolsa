@@ -8,5 +8,9 @@ Stock newStock(char code[], float price, int nstocks){
   strcpy(stock.code, code);
   stock.price = price;
   stock.nstocks = nstocks;
+  stock.min= price;
+  stock.max=price;
+  stock.begin=price;
+  stock.end=price;
   return stock;
 }
