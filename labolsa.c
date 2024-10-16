@@ -26,25 +26,25 @@ int main(int argn, char **argv){
     //user = malloc(sizeof(User)*N);
     //stock = malloc(sizeof(Stock)*M);
     
-    printf("Labolsa simulator ver 20240828_1056\n");
+    printf("#Labolsa simulator ver 20241016_1053\n");
 
     // Creating stocks
-    printf("Generating %i stock... ",M);
+    printf("#Generating %i stock... ",M);
     for(i=0; i < M; i++){
       sprintf(code,"MEX%i",i);
       addStock(market,newStock(code,100.0,50));      
       //stock[i] = newStock(code,100.0);
     }
-    printf("Ready!\n");
+    printf("#Ready!\n");
      
-    printf("Generating %i users... ",N);
+    printf("#Generating %i users... ",N);
     for(i=0; i < N; i++){
       addUser(market,newUser(i,10000.00));
     }
-    printf("Ready!\n");
+    printf("#Ready!\n");
      //printf("%s:%f\n",stock[0].code,stock[0].price);
     memory_used = (float)(sizeof(User)*N+sizeof(Stock)*M)/1e6; 
-    printf("Memory used: %f Mb \n",memory_used);
+    printf("#Memory used: %f Mb \n",memory_used);
 
     // create the OPIs of our model. We create a random asignator of OPIS for all the users.
     srand(time(NULL));
@@ -64,13 +64,13 @@ int main(int argn, char **argv){
       
     }while(remain_stocks(*market) > 0);
 
-    printf("INFO202: IOPs iterations: %i\n",k);
+    printf("#INFO202: IOPs iterations: %i\n",k);
 
     //printMarket(market);
 
-    printf("Running Montecarlo...\n");
-    for(int i=0; i < 1000; i++){
-      printf("%i:",i);
+    printf("#Running Montecarlo...\n");
+    for(int i=0; i < 100; i++){
+      printf("#%i:",i);
       montecarlo(market);
       printJapaneseCandle(market);
       //printOrders(market);

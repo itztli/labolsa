@@ -19,6 +19,8 @@ extern "C" {
   
   double randomValue(double a, double b);  
 
+  int orders_trash_collector(Market *market);
+  
 #ifdef __cplusplus
 } /* extern "C" */
 #endif /* __cplusplus */

@@ -80,3 +80,40 @@ void printOrders(Market *market){
   
 }
   
+int orders_trash_collector(Market *market){
+  Order *orders_buy_new;
+  Order *orders_sell_new;
+  int norders,j;
+  int norders_buy, norders_sell;
+  norders_buy = market->norders_buy;
+  norders_sell = market->norders_sell; 
+    
+  orders_buy_new = malloc(sizeof(Order)*norders_buy);
+  orders_sell_new = malloc(sizeof(Order)*norders_sell);
+  j=0;
+  for (int i=0; i< market->index_order_buy; i++){
+    if(market->orders_buy[i].n_actions > 0){
+      memcpy(&orders_buy_new[j], &market->orders_buy[i], sizeof(Order));
+      //      orders_buy_new[j] = market->orders_buy[i];
+      j++;
+    }
+  }
+  market->index_order_buy = j;
+  j=0;
+  for (int i=0; i< market->index_order_sell; i++){
+    if(market->orders_sell[i].n_actions > 0){
+      memcpy(&orders_sell_new[j], &market->orders_sell[i], sizeof(Order));
+      //orders_sell_new[j] = market->orders_sell[i];
+      j++;
+    }
+  }
+  market->index_order_sell = j;
+  free(market->orders_buy);
+  free(market->orders_sell);
+
+  market->orders_buy = orders_buy_new;
+  market->orders_sell = orders_sell_new;
+  
+
+}
+

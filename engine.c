@@ -5,6 +5,8 @@
 #include "order.h"
 #include "user.h"
 
+//LOG
+// BUG1: segmentation fault.
 int montecarlo(Market *market){
   float price;
   int r;
@@ -14,7 +16,7 @@ int montecarlo(Market *market){
   n_buy=0;
   n_sell=0;
   //CREATING BUY/SELL ORDERS
-  printf("Creating orders:\n");  
+  printf("Creating NEW orders (old %i/%i):\n",market->index_order_buy,market->index_order_sell);  
   //printf("INFO: index_stock=%i\n",market->index_stock);
   for(int i=0; i < market->index_stock; i++){
     price = market->stocks[i].price;
@@ -35,12 +37,12 @@ int montecarlo(Market *market){
     } //j
   } //i
 
-  printf("Buy Orders:%i\tSell Orders:%i.\n",n_buy,n_sell);
+  printf("#Buy Orders:%i\tSell Orders:%i.\n",n_buy,n_sell);
 
   // CLEAR BEGIN_FLAGS
   
   // EXECUTINGS ORDERS
-  printf("Executing orders.\n");
+  //printf("#Executing orders...\n");
   for (int i=0; i < market->index_order_buy; i++){
     bid = market->orders_buy[i].bid;
     
@@ -61,11 +63,17 @@ int montecarlo(Market *market){
 	//transfering money to seller
 	market->orders_sell[j].user->money += n_actions*bid;
 	//quit the stock from the seller
-	actual_stock = get(*market->orders_sell[j].user, market->orders_buy[i].stock[i].code);
-	insert(market->orders_sell[j].user,market->orders_buy[i].stock[i].code,actual_stock-n_actions);
+	//printf("A:%s\n",market->orders_buy[i].stock->code);
+	//BUG1 actual_stock = get(*market->orders_sell[j].user, market->orders_buy[i].stock[i].code);
+	actual_stock = get(*market->orders_sell[j].user, market->orders_buy[i].stock->code);
+	//printf("B\n");
+	//BUG1 insert(market->orders_sell[j].user,market->orders_buy[i].stock[i].code,actual_stock-n_actions);
+	insert(market->orders_sell[j].user,market->orders_buy[i].stock->code,actual_stock-n_actions);
 	// transfer the stock to the buyer
-	actual_stock = get(*market->orders_buy[i].user, market->orders_buy[i].stock[i].code);
-	insert(market->orders_buy[i].user,market->orders_buy[i].stock[i].code,actual_stock+n_actions);
+	//BUG1 actual_stock = get(*market->orders_buy[i].user, market->orders_buy[i].stock[i].code);
+	actual_stock = get(*market->orders_buy[i].user, market->orders_buy[i].stock->code);
+	//BUG1 insert(market->orders_buy[i].user,market->orders_buy[i].stock[i].code,actual_stock+n_actions);
+	insert(market->orders_buy[i].user,market->orders_buy[i].stock->code,actual_stock+n_actions);
 	// update the price of the stock
 	if (market->orders_sell[j].stock->begin_flag == 1){
 	  market->orders_sell[j].stock->begin = bid;
@@ -90,6 +98,8 @@ int montecarlo(Market *market){
 
     }
   }
+  //delete all the transactions in 0:
+  orders_trash_collector(market);
   
   return 1;
 }
