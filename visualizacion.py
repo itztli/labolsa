@@ -25,6 +25,9 @@ import pandas as pd
 #import matplotlib.pyplot as plt
 import re
 import datetime
+#from matplotlib.pyplot import plot, draw, show
+#import matplotlib
+#matplotlib.use('gtk4agg')
 
 average = []
 Date = []
@@ -36,16 +39,19 @@ Volume = []
 
 current_time = datetime.date(2024, 1, 1)
 delta = datetime.timedelta(seconds=1)
-
+MAXLINES=1000
 
 #Ibrahm Franch SIGs
 #Exploracion Geofisica Erika Olin Solano
 
 with open('test1.dat', 'r') as file:
     renglones = file.readlines()
-    
+    lines=0
     for renglon in renglones:
         if renglon.startswith('MEX1'):
+            lines=lines+1
+            if lines >= MAXLINES:
+                break
             line = re.split(r'\s+', renglon.strip())  # Dividir la línea por espacios
             average.append(float(line[3]))
             Date.append(current_time)
@@ -117,3 +123,5 @@ mpf.plot(prices, type='candle', volume=False, style='charles', title='Stock', yl
 ##plt.tight_layout()  
 ##
 #plt.show()  
+#draw()
+#show()

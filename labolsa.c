@@ -43,7 +43,7 @@ VERSION Beta (10/22/2024)
 int main(int argn, char **argv){
   User *user;
   Stock *stock;
-  Market *market;
+  Market *market;    
   char code[8];
   int i,j,k,n;
   int M;             // number of companies.
@@ -53,9 +53,16 @@ int main(int argn, char **argv){
   float cash;        // cash for each user.
   int n_stocks_by_company; //number of stocks maximum for each company.
   float memory_used;
+  int max_itera;
   
   //printf("%i\n",argn);
-  if (argn == 8){
+  if (argn == 9){
+
+    if (strlen(argv[1]) > 8){
+      print_help();
+      return EX_USAGE;
+    }
+
     if (sscanf(argv[2],"%i", &M) <= 0){
       print_help();
       return EX_USAGE;
@@ -86,11 +93,13 @@ int main(int argn, char **argv){
       return EX_USAGE;
     }
 
-    if (strlen(argv[1]) > 8){
+    if (sscanf(argv[8],"%i", &max_itera)<= 0){
       print_help();
       return EX_USAGE;
     }
-      
+
+
+    
     market = newMarket(argv[1],M,N,P);
     
     //user = malloc(sizeof(User)*N);
@@ -124,18 +133,28 @@ int main(int argn, char **argv){
     k=0;
     printf("#Computing IOPs...\n");
     do{
+
+      //(*market).index_stock   ===    market->index_stock
+	
       for(int i=0; i < market->index_user;i++){
 	j = (int)randomValue(0.0, (float)market->index_stock);
 	  n = (int)((market->users[i].money/market->stocks[j].price)*randomValue(0.0, 1.0));
 	  //printf("INFO: n= %i\n",n);
-	  if (n < 1) n = 1;
-	  //printf("INFO1:%s\n",market->stocks[j].code);
-	buy_OPI(&market->stocks[j],&market->users[i],n,market->stocks[j].price);
+	  if (n >= 1){
+	    buy_OPI(&market->stocks[j],&market->users[i],n,market->stocks[j].price);
+	  }
+	  /*
+	  if (( n >0 ) && ( n < 1)){
+	    n = 1; //fixed bug
+	    //printf("INFO1:%s\n",market->stocks[j].code);
+	  }
+	  if (n >= 1){
+	    buy_OPI(&market->stocks[j],&market->users[i],n,market->stocks[j].price);
+	  }
+	  */	  
       }
       k++;
-
       //printMarket(market);
-      
     }while(remain_stocks(*market) > 0);
 
     printf("#IOPs iterations: %i\n",k);
@@ -143,7 +162,7 @@ int main(int argn, char **argv){
     //printMarket(market);
 
     printf("#Running Montecarlo...\n");
-    for(int i=0; i < 1000; i++){
+    for(int i=0; i < max_itera; i++){
       printf("#%i:",i);
       montecarlo(market);
       printJapaneseCandle(market);

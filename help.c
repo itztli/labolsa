@@ -27,7 +27,7 @@ void print_help(){
   printf("LaBolsa ver 1.0\n");
   printf("Error: Missing arguments.\n");
   printf("Seven arguments are required:\n");
-  printf("Example: ./labolsa <name> <companies> <users> <orders> <stock_value> <n_stocks> <cash>\n");
+  printf("Example: ./labolsa <name> <companies> <users> <orders> <stock_value> <n_stocks> <cash> <max_itera>\n");
   printf("Where:\n");
   printf("name: Market name [code of 8 characters maximum].\n");
   printf("companies: Number of Publicly Traded Companies in the Market [Integer].\n");
@@ -35,5 +35,6 @@ void print_help(){
   printf("orders: Total number of orders allowed in the market by cycle [Integer].\n");
   printf("stock_value: Individual price for each stock [Float].\n");
   printf("n_stocks: Number of stocks maximum for each company [Integer].\n");
-  printf("cash: Initial cash for each user. [Float].\n");
+  printf("cash: Initial cash for each user [Float].\n");
+  printf("max_itera: Number of iterations of the model [Int].\n");
 }
