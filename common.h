@@ -34,6 +34,7 @@ extern "C" {
     int index;
     float money; //total money of the user
     float money_in_orders; //money compromised in orders
+    int age;
     int size; // Current number of elements in the map 
     char keys[MAX_SIZE][32]; // Array to store the keys (stock codes) 
     int values[MAX_SIZE]; // Array to store the values 

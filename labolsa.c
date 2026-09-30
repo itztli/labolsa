@@ -26,6 +26,7 @@ VERSION Beta (10/22/2024)
 #include <stdlib.h>
 #include <time.h>
 #include <string.h>
+#include <math.h>
 #include "help.h"
 #include "user.h"
 #include "stock.h"
@@ -37,6 +38,32 @@ VERSION Beta (10/22/2024)
 #define EXIT_SUCCESS 0      // Ejecución exitosa
 #define EXIT_FAILURE 1      // Error general no especificado
 #define EX_USAGE     64     // Uso incorrecto de comando
+
+// https://claude.ai/share/41b3ea27-333b-430e-b03f-117f9ecb1c46
+
+/* Uniforme en (0,1), sin incluir 0 ni 1 */
+double uniforme01(void) {
+    return (rand() + 1.0) / (RAND_MAX + 2.0);
+}
+
+/* Cash que crece exponencialmente con la edad, con variación aleatoria
+   exponencial truncada para no pasar de cash_max */
+double cash_exponencial(int edad, double cash_min, double cash_max) {
+    double rango = cash_max - cash_min;
+    double t = (edad - 18) / 62.0;                 /* 0 a los 18, 1 a los 80 */
+
+    /* Piso que crece exponencialmente con la edad */
+    double k = 2.0;                                /* curvatura del crecimiento */
+    double piso = cash_min + 0.7 * rango * (exp(k * t) - 1.0) / (exp(k) - 1.0);
+
+    /* Variación exponencial truncada entre piso y cash_max */
+    double hueco  = cash_max - piso;
+    double lambda = 1.0 / (0.10 * rango);          /* variación media ~10 % del rango */
+    double u = uniforme01();
+    double x = -log(1.0 - u * (1.0 - exp(-lambda * hueco))) / lambda;
+
+    return piso + x;
+}
 
 // NOTE: The user not update the price of the order after the first execution. We need to create a new function to ask to the user if wants to update price after each execution ends.
 
@@ -50,13 +77,15 @@ int main(int argn, char **argv){
   int N;             // number of users.
   int P;             // number of orders.
   float stock_value; // individual price for each stock.
-  float cash;        // cash for each user.
+  //float cash;        // cash for each user.
+  float cash_min;
+  float cash_max;
   int n_stocks_by_company; //number of stocks maximum for each company.
   float memory_used;
   int max_itera;
   
   //printf("%i\n",argn);
-  if (argn == 9){
+  if (argn == 10){
 
     if (strlen(argv[1]) > 8){
       print_help();
@@ -88,12 +117,18 @@ int main(int argn, char **argv){
       return EX_USAGE;
     }
 
-    if (sscanf(argv[7],"%f", &cash)<= 0){
+    if (sscanf(argv[7],"%f", &cash_min)<= 0){
       print_help();
       return EX_USAGE;
     }
 
-    if (sscanf(argv[8],"%i", &max_itera)<= 0){
+    if (sscanf(argv[8],"%f", &cash_max)<= 0){
+      print_help();
+      return EX_USAGE;
+    }
+    
+
+    if (sscanf(argv[9],"%i", &max_itera)<= 0){
       print_help();
       return EX_USAGE;
     }
@@ -118,10 +153,16 @@ int main(int argn, char **argv){
       //stock[i] = newStock(code,100.0);
     }
     printf("#Ready!\n");
-     
+    //srand(time(NULL));
+    srand(1);
     printf("#Generating %i users... ",N);
     for(i=0; i < N; i++){
-      addUser(market,newUser(i,cash));
+      int age = 18 + rand() % (80 - 18 + 1);   /* 18 + (0..62) */
+      //double cash_min = 1000.0;
+      //double cash_max = 50000.0;
+      float new_cash = cash_exponencial(age, cash_min, cash_max);
+      //float new_cash = randomValue(0.1*cash, cash);
+      addUser(market,newUser(i,new_cash,age));
     }
     printf("#Ready!\n");
      //printf("%s:%f\n",stock[0].code,stock[0].price);
@@ -129,7 +170,7 @@ int main(int argn, char **argv){
     printf("#Memory used: %f Mb \n",memory_used);
     //print_divergence(market);
     // create the OPIs of our model. We create a random asignator of OPIS for all the users.
-    srand(time(NULL));
+    // srand(time(NULL));
     k=0;
     printf("#Computing IOPs...\n");
     do{

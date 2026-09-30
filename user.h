@@ -31,8 +31,8 @@ extern "C" {
 #include "market.h"
 #include <string.h>
   
-
-  User newUser(int index, float money);
+  // age [year]
+  User newUser(int index, float money, int age);
 
   //ask to participate in buy action in stock
   int askOrderBuy(User user, Stock stock);
